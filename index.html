@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy 1 Year — Our Journey</title>
+  <style>
+    /* ---------- Reset & base ---------- */
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220AA;
+      --accent:#ff6b81;
+      --muted:#cbd5e1;
+      --glass: rgba(255,255,255,0.06);
+      font-family: Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071027 0%, #0f2133 100%);color:var(--muted);-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    main{max-width:980px;margin:0 auto;padding:28px}
+    .center{display:flex;align-items:center;justify-content:center}
+    /* ---------- Hero ---------- */
+    .hero{
+      min-height:66vh;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:18px;
+      align-items:center;
+      padding:28px;
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-bg{
+      position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(6px) saturate(1.05);opacity:0.18;
+      transform:scale(1.05);
+    }
+    .hero-content{position:relative;z-index:2;padding:30px}
+    h1{font-size:2.4rem;margin:0 0 8px;color:#fff;letter-spacing:0.2px}
+    p.lead{margin:0;color:var(--muted);font-size:1.05rem}
+    .love-btn{
+      margin-top:18px;
+      display:inline-flex;gap:10px;align-items:center;padding:10px 16px;border-radius:999px;
+      background:linear-gradient(90deg,var(--accent), #ff9db3);color:#fff;border:0;cursor:pointer;font-weight:600;box-shadow:0 6px 18px rgba(255,107,129,0.16);
+    }
+    .love-btn:focus{outline:3px solid rgba(255,107,129,0.18);outline-offset:3px}
+    .mem-btn{
+      margin-top:18px;
+      display:inline-flex;gap:10px;align-items:center;padding:8px 12px;border-radius:999px;
+      background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.06);cursor:pointer;font-weight:600;
+    }
+
+    /* ---------- Gallery ---------- */
+    .section{margin-top:26px}
+    .hidden{display:none}
+    .grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;
+    }
+    .card{
+      border-radius:12px;overflow:hidden;background:var(--glass);padding:8px;backdrop-filter:blur(6px);
+      cursor:pointer;transition:transform .28s ease, box-shadow .28s ease;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(2,6,23,0.45)}
+    .card img{width:100%;height:160px;object-fit:cover;display:block}
+    .caption{padding:8px;font-size:0.92rem;color:#fff}
+    /* ---------- Affirmations / Typewriter ---------- */
+    .affirm{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:18px;border-radius:12px;
+    }
+    .typewriter{font-size:1.05rem;color:#fff;min-height:46px}
+    .affirm-list{margin:8px 0 0 0;padding-left:18px;font-size:1rem;line-height:1.5;color:#fff}
+    .affirm-list li{margin:8px 0}
+    .dots{height:6px;width:6px;border-radius:50%;display:inline-block;margin-left:8px;background:var(--accent)}
+    /* ---------- Reveal card ---------- */
+    .reveal{
+      margin-top:18px;padding:14px;border-radius:12px;background:linear-gradient(180deg,#071426 0%, #081824 100%);text-align:center;
+    }
+    .reveal button{margin-top:12px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;background:#122033;color:#fff;font-weight:600}
+    /* ---------- Lightbox ---------- */
+    .lightbox{
+      position:fixed;inset:0;background:rgba(2,6,23,0.75);display:none;align-items:center;justify-content:center;padding:18px;z-index:9999;
+    }
+    .lightbox.open{display:flex}
+    .lightbox img{max-width:92%;max-height:86vh;border-radius:12px;box-shadow:0 30px 80px rgba(2,6,23,0.8)}
+    .close-x{
+      position:fixed;top:22px;right:22px;color:#fff;font-size:26px;cursor:pointer;
+      background:transparent;border:0;padding:6px;border-radius:6px;
+    }
+    /* ---------- Footer ---------- */
+    footer{margin:28px 0 80px;text-align:center;color:#9fb6d0;font-size:0.95rem}
+    /* ---------- Confetti canvas ---------- */
+    #confetti{pointer-events:none;position:fixed;left:0;top:0;width:100%;height:100%;z-index:999}
+    /* ---------- Responsive ---------- */
+    @media(min-width:780px){
+      .hero{grid-template-columns:1fr 420px}
+      .hero-content{padding:34px}
+      .hero-side{padding:30px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+    }
+  </style>
+</head>
+<body>
+  <!-- Optional background music: uncomment the audio tag and set src to your music file -->
+  <!-- <audio id="music" loop src="music/your-song.mp3" preload="auto"></audio> -->
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <main>
+    <div class="hero" aria-labelledby="title">
+      <div class="hero-bg" id="heroBg" style="background-image:url('images/hero.jpg');" aria-hidden="true"></div>
+
+      <div class="hero-content" role="main">
+        <h1 id="title">Happy 1st Anniversary, Sweetie ❤️</h1>
+        <p>
+          My love, today marks one year of us 🫂🫂❤️ one year of laughter, late-night talks, random smiles, and quiet peace.
+          You’ve been my calm, my comfort, and my constant. The way you carry yourself, the way you love, and the way you understand me 
+          that’s what makes my world feel right. You’re my safe place, my joy, and my favorite person. Happy anniversary, my Sweetie ❤️.
+        </p>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="love-btn"
+                  id="openAffirm"
+                  type="button"
+                  aria-controls="affirmSection"
+                  aria-expanded="false">
+            Open My Love Notes
+          </button>
+
+          <!-- Memories Gallery toggle button -->
+          <button class="mem-btn" id="toggleGalleryBtn" type="button" aria-controls="gallerySection" aria-expanded="false">
+            Open Memories Gallery
+          </button>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <!-- Gallery section is initially hidden; clicking the Memories button will reveal it -->
+        <div class="section hidden" id="gallerySection" aria-hidden="true">
+          <h3 style="margin:0 0 8px;color:#fff">Memories Gallery</h3>
+          <div class="grid" id="gallery">
+            <!-- IMPORTANT: update image filenames to match your files -->
+            <div class="card" data-large="images/Our%20first%20memorable%20walk.jpeg">
+              <img src="images/Our%20first%20memorable%20walk.jpeg" alt="Our first walk">
+              <div class="caption">Our first walk to nowhere — I still remember that beautiful moment full of smiles.</div>
+            </div>
+            <div class="card" data-large="images/our%20very%20first%20time%20shoot.jpeg">
+              <img src="images/our%20very%20first%20time%20shoot.jpeg" alt="First shoot">
+              <div class="caption">That beautiful capture of us — it brings sweet memories every time.</div>
+            </div>
+            <div class="card" data-large="images/Birthaday%20shoot.jpeg">
+              <img src="images/Birthaday%20shoot.jpeg" alt="Birthday shoot">
+              <div class="caption">Birthday shoot — I loved every single moment.</div>
+            </div>
+            <div class="card" data-large="images/Birthday%20out.jpeg">
+              <img src="images/Birthday%20out.jpeg" alt="Birthday out">
+              <div class="caption">A cozy evening out — the laugh comes automatically recalling what we ordered.</div>
+            </div>
+            <div class="card" data-large="images/valentine%20shoot.jpeg">
+              <img src="images/valentine%20shoot.jpeg" alt="Valentine shoot">
+              <div class="caption">Our first Valentine together — you were glowing.</div>
+            </div>
+            <div class="card" data-large="images/A%20regaining%20back%20smile%20moment.jpeg">
+              <img src="images/A%20regaining%20back%20smile%20moment.jpeg" alt="Silly selfies">
+              <div class="caption">Silly selfies & inside jokes — forever ours.</div>
+            </div>
+            <div class="card" data-large="images/R-shoot.jpeg">
+              <img src="images/R-shoot.jpeg" alt="R-shoot">
+              <div class="caption">A random shoot with our classy outfit.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-side" style="padding:20px">
+        <div class="affirm" id="affirmSection">
+          <h4 style="margin:0 0 8px;color:#fff">Words for You</h4>
+          <!-- Typewriter stays for ambient effect; it's focusable so the button can jump to it.
+               When the user clicks "Open My Love Notes" the script will replace its content with the full list. -->
+          <div class="typewriter" id="typewriter" aria-live="polite" tabindex="-1"></div>
+        </div>
+
+        <div class="reveal">
+          <h4 style="margin:0 0 6px;color:#fff">Quick Surprise</h4>
+          <p style="margin:0;color:var(--muted)">Click to reveal my favorite thing about you.</p>
+          <button id="revealBtn" aria-controls="revealText" type="button">Reveal 💌</button>
+          <div id="revealText" style="margin-top:12px;color:#ffdfe6;font-weight:600;min-height:44px" aria-live="polite"></div>
+        </div>
+
+        <div style="margin-top:12px;text-align:center">
+          <small style="color:var(--muted);display:block">Made with ❤ by Simon</small>
+          <button style="margin-top:8px;padding:8px 12px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer" id="playPause" type="button">Play music</button>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+     @Proftechsolutions.<br>
+     ProfG de real one.
+    </footer>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="close-x" id="closeLb" aria-label="Close lightbox" title="Close" type="button">✕</button>
+    <img id="lightboxImg" src="" alt="Memory photo">
+  </div>
+
+  <script>
+    // Wait for DOM ready so all elements exist and avoid runtime errors when things are missing
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /* ---------- Affirmations (Typewriter + static list on button click) ---------- */
+      const ambientAffirmations = [
+        "You make my world brighter every single day.",
+        "I love how kind and thoughtful you are.",
+        "Thank you for making ordinary moments extraordinary.",
+        "With you, I feel seen, loved, and at home.",
+        "You’re my favorite hello and hardest goodbye.",
+        "I’m grateful for you for your strength, your laugh, your heart."
+      ];
+
+      // The exact list the user requested to show when clicking "Open My Love Notes"
+      const loveNotes = [
+        "You have a way of making everything around you feel calm and full of light.",
+        "The way you carry yourself  with confidence and grace always amazes me.",
+        "Your caring heart brings peace to my world.",
+        "I love how you listen, understand, and make me feel truly seen.",
+        "You love so purely and so deeply it makes me feel at home.",
+        "You’re the person who turns even the quietest moments into something special.",
+        "Your presence reminds me what love, patience, and kindness really mean.",
+        "I thank God every day for giving me someone as beautiful inside and out as you.",
+        "No matter what happens, I always find peace in you, my Snookum ❤️"
+      ];
+
+      const typeEl = document.getElementById('typewriter');
+      let typewriterRunning = true; // controls ambient typewriter
+      if (typeEl) {
+        let aIdx = 0;
+        let charIdx = 0;
+        let deleting = false;
+
+        function tick() {
+          if (!typewriterRunning) return; // stop ambient typewriter when user opens notes
+          const current = ambientAffirmations[aIdx] || "";
+          if (!deleting) {
+            charIdx++;
+            typeEl.textContent = current.slice(0, charIdx);
+            if (charIdx >= current.length) {
+              deleting = true;
+              setTimeout(tick, 1800);
+              return;
+            }
+          } else {
+            charIdx--;
+            typeEl.textContent = current.slice(0, charIdx);
+            if (charIdx <= 0) {
+              deleting = false;
+              aIdx = (aIdx + 1) % ambientAffirmations.length;
+              setTimeout(tick, 500);
+              return;
+            }
+          }
+          setTimeout(tick, deleting ? 35 : 50);
+        }
+        tick();
+      }
+
+      /* ---------- Gallery lightbox ---------- */
+      const gallery = document.getElementById('gallery');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const closeLb = document.getElementById('closeLb');
+
+      if (gallery && lightbox && lightboxImg) {
+        gallery.addEventListener('click', (e) => {
+          const card = e.target.closest('.card');
+          if (!card) return;
+          const srcAttr = card.dataset.large && card.dataset.large.trim() !== "" ? card.dataset.large : (card.querySelector('img') && card.querySelector('img').src);
+          if (!srcAttr) return;
+          lightboxImg.src = srcAttr;
+          lightbox.classList.add('open');
+          lightbox.setAttribute('aria-hidden', 'false');
+          if (closeLb) closeLb.focus();
+        });
+      }
+
+      if (closeLb && lightbox) {
+        closeLb.addEventListener('click', () => {
+          lightbox.classList.remove('open');
+          lightbox.setAttribute('aria-hidden', 'true');
+          if (lightboxImg) lightboxImg.src = '';
+        });
+        lightbox.addEventListener('click', (e) => {
+          if (e.target === lightbox) {
+            lightbox.classList.remove('open');
+            lightbox.setAttribute('aria-hidden', 'true');
+            if (lightboxImg) lightboxImg.src = '';
+          }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+            lightbox.classList.remove('open');
+            lightbox.setAttribute('aria-hidden', 'true');
+            if (lightboxImg) lightboxImg.src = '';
+          }
+        });
+      }
+
+      /* ---------- Reveal favorite thing (and confetti) ---------- */
+      const revealBtn = document.getElementById('revealBtn');
+      const revealText = document.getElementById('revealText');
+      const confettiCanvas = document.getElementById('confetti');
+
+      const favoriteLines = [
+        "Your laugh — it lights up my whole day. I love you more than words can say.",
+        "Who you are — the way you carry yourself, your caring and loving nature, your understanding — that’s what makes me feel at peace and at home with you."
+      ];
+
+      if (revealBtn && revealText) {
+        revealBtn.addEventListener('click', () => {
+          revealText.innerHTML = favoriteLines.map(l => `<div>${escapeHtml(l)}</div>`).join('<br>');
+          revealBtn.disabled = true;
+          revealBtn.style.opacity = '0.8';
+          if (confettiCanvas) fireConfetti(120);
+        });
+      }
+
+      /* ---------- Basic confetti (lightweight) ---------- */
+      function fireConfetti(pieces = 60) {
+        if (!confettiCanvas) return;
+        const ctx = confettiCanvas.getContext && confettiCanvas.getContext('2d');
+        if (!ctx) return;
+
+        function resizeCanvas() {
+          confettiCanvas.width = window.innerWidth;
+          confettiCanvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(resizeCanvas, 150);
+        });
+
+        const conf = [];
+        for (let i = 0; i < pieces; i++) {
+          conf.push({
+            x: Math.random() * confettiCanvas.width,
+            y: Math.random() * -confettiCanvas.height,
+            r: Math.random() * 8 + 4,
+            vx: Math.random() * 3 - 1.5,
+            vy: Math.random() * 3 + 2,
+            color: `hsl(${Math.random() * 340},70%,60%)`,
+            rot: Math.random() * 360,
+            spin: Math.random() * 8 - 4
+          });
+        }
+        let t = 0;
+        function frame() {
+          ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+          conf.forEach((c) => {
+            c.x += c.vx;
+            c.y += c.vy;
+            c.vy += 0.03;
+            c.rot += c.spin;
+            ctx.save();
+            ctx.translate(c.x, c.y);
+            ctx.rotate(c.rot * Math.PI / 180);
+            ctx.fillStyle = c.color;
+            ctx.fillRect(-c.r / 2, -c.r / 2, c.r, c.r * 0.6);
+            ctx.restore();
+          });
+          t++;
+          if (t < 220) requestAnimationFrame(frame);
+          else ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        }
+        frame();
+      }
+
+      /* ---------- Open My Love Notes: show full affirmations list and focus ---------- */
+      const openAffirm = document.getElementById('openAffirm');
+      if (openAffirm && typeEl) {
+        openAffirm.addEventListener('click', () => {
+          const affirmEl = document.getElementById('affirmSection');
+
+          // Stop ambient typewriter and show the full list
+          typewriterRunning = false;
+
+          // Build a safe HTML list for the love notes
+          const listHtml = '<ul class="affirm-list">' + loveNotes.map(item => `<li>${escapeHtml(item)}</li>`).join('') + '</ul>';
+          typeEl.innerHTML = listHtml;
+
+          // Scroll to the affirmations section and focus it for accessibility
+          if (affirmEl) {
+            affirmEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          // set aria-expanded to true briefly for assistive tech context
+          openAffirm.setAttribute('aria-expanded', 'true');
+          setTimeout(() => openAffirm.setAttribute('aria-expanded', 'false'), 1200);
+
+          // focus the first list item for keyboard/screen-reader users
+          const firstLi = typeEl.querySelector('.affirm-list li');
+          if (firstLi) {
+            // make it temporarily focusable then focus
+            firstLi.setAttribute('tabindex', '-1');
+            firstLi.focus({ preventScroll: true });
+            // remove tabindex after a short delay so it doesn't pollute tab order
+            setTimeout(() => firstLi.removeAttribute('tabindex'), 800);
+          }
+        });
+      }
+
+      /* ---------- Memories Gallery toggle button ---------- */
+      const toggleGalleryBtn = document.getElementById('toggleGalleryBtn');
+      const gallerySection = document.getElementById('gallerySection');
+      if (toggleGalleryBtn && gallerySection) {
+        toggleGalleryBtn.addEventListener('click', () => {
+          const isHidden = gallerySection.classList.contains('hidden');
+          if (isHidden) {
+            gallerySection.classList.remove('hidden');
+            gallerySection.setAttribute('aria-hidden', 'false');
+            toggleGalleryBtn.setAttribute('aria-expanded', 'true');
+            toggleGalleryBtn.textContent = 'Hide Memories';
+            gallerySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            gallerySection.classList.add('hidden');
+            gallerySection.setAttribute('aria-hidden', 'true');
+            toggleGalleryBtn.setAttribute('aria-expanded', 'false');
+            toggleGalleryBtn.textContent = 'Open Memories Gallery';
+            toggleGalleryBtn.focus();
+          }
+        });
+      }
+
+      /* ---------- Play/pause music button ---------- */
+      const playPause = document.getElementById('playPause');
+      const music = document.getElementById('music'); // may be null if audio tag commented
+      let musicPlaying = false;
+      if (playPause) {
+        playPause.addEventListener('click', () => {
+          if (!music) {
+            playPause.textContent = 'Enable music (uncomment audio tag)';
+            setTimeout(() => { playPause.textContent = musicPlaying ? 'Pause music' : 'Play music'; }, 2400);
+            return;
+          }
+          if (!musicPlaying) { music.play(); playPause.textContent = 'Pause music'; musicPlaying = true; }
+          else { music.pause(); playPause.textContent = 'Play music'; musicPlaying = false; }
+        });
+      }
+
+      /* ---------- Small: Preload images for smoother lightbox ---------- */
+      const imgs = Array.from(document.querySelectorAll('.card img')).map(i => i.src).filter(Boolean);
+      imgs.forEach(src => { const im = new Image(); im.src = src; });
+
+      /* ---------- Utility: escape HTML (used for reveal text and love notes) ---------- */
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+    });
+  </script>
+</body>
+</html>
